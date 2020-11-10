@@ -12,26 +12,33 @@ import java.sql.Date;
  * @author User
  */
 public class Pesanan {
-    int idPesanan;
-    String tipePesanan;
-    String alamatJemput;
-    String alamatTujuan;
-    int totalHarga;
-    Date tanggalPemesanan;
+    private int idPesanan;
+    private String tipePesanan;
+    private String alamatJemput;
+    private String alamatTujuan;
+    private int totalHarga;
+    private String tanggalPemesanan;
+    private int status;
     
     public Pesanan(){
         
     }
 
-    public Pesanan(int idPesanan, String tipePesanan, String alamatJemput, String alamatTujuan, int totalHarga, Date tanggalPemesanan) {
+    public Pesanan(int idPesanan, String tipePesanan, String alamatJemput, String alamatTujuan, int totalHarga, String tanggalPemesanan, int status) {
         this.idPesanan = idPesanan;
         this.tipePesanan = tipePesanan;
         this.alamatJemput = alamatJemput;
         this.alamatTujuan = alamatTujuan;
         this.totalHarga = totalHarga;
         this.tanggalPemesanan = tanggalPemesanan;
+        this.status = status;
     }
-
+    public int getStatus(){
+        return status;
+    }
+    public void setStatus(int status){
+        this.status = status;
+    }
     public int getIdPesanan() {
         return idPesanan;
     }
@@ -72,11 +79,11 @@ public class Pesanan {
         this.totalHarga = totalHarga;
     }
 
-    public Date getTanggalPemesanan() {
+    public String getTanggalPemesanan() {
         return tanggalPemesanan;
     }
 
-    public void setTanggalPemesanan(Date tanggalPemesanan) {
+    public void setTanggalPemesanan(String tanggalPemesanan) {
         this.tanggalPemesanan = tanggalPemesanan;
     }
 }
