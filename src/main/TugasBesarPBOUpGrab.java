@@ -5,6 +5,10 @@
  */
 package main;
 
+import controller.Controller;
+import view.MenuDriver;
+import view.MenuLogin;
+
 /**
  *
  * @author User
@@ -15,7 +19,7 @@ public class TugasBesarPBOUpGrab {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        new MenuLogin();
     }
     
 }

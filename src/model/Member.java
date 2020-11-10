@@ -12,15 +12,15 @@ import java.util.ArrayList;
  * @author User
  */
 public class Member extends Users{
-    int saldoOVO;
-    ArrayList<Pesanan> Pesanan=new ArrayList<Pesanan>();
+    private int saldoOVO;
+    private ArrayList<Pesanan> Pesanan=new ArrayList<Pesanan>();
     
     public Member(){
         
     }
 
-    public Member(ArrayList Pesanan, int saldoOVO, String nama, String alamat, String email, String username, String password) {
-        super(nama, alamat, email, username, password);
+    public Member(ArrayList Pesanan, int saldoOVO, int idUser, String nama, String alamat, String email, String username, String password) {
+        super(idUser, nama, alamat, email, username, password);
         this.Pesanan = Pesanan;
         this.saldoOVO = saldoOVO;
     }

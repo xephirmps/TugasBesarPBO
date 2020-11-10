@@ -5,6 +5,7 @@
  */
 package view;
 
+import Controller.UserManager;
 import controller.Controller;
 import model.Users;
 import java.awt.event.ActionEvent;
@@ -15,6 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
@@ -22,15 +24,14 @@ import javax.swing.WindowConstants;
  *
  * @author User
  */
-public class login extends JFrame implements ActionListener{
-    JPanel panel;
+public class MenuLogin extends JFrame implements ActionListener{
     JFrame loginFrame = new JFrame("Login");
     
     JLabel l_username = new JLabel("Username");
     JTextField tf_username = new JTextField();
 
     JLabel l_password = new JLabel("Password");
-    JTextField tf_password = new JTextField();
+    JPasswordField tf_password = new JPasswordField();
     
     JLabel l_register = new JLabel("Register");
     
@@ -38,7 +39,7 @@ public class login extends JFrame implements ActionListener{
     JButton btn_register = new JButton("Register");
 
     
-    public login(){
+    public MenuLogin(){
         loginFrame.setSize(450,250);
         loginFrame.setLocationRelativeTo(null);
         loginFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -80,15 +81,32 @@ public class login extends JFrame implements ActionListener{
             case "Submit":
                 String username = tf_username.getText();
                 String password = tf_password.getText();
-                boolean CekLogin = Users.CekLogin(username, password);
-                if(CekLogin){
-                    //masukan menu selanjutnya
+                Users user = new Users();
+                user.setUsername(username);
+                user.setPassword(password);
+                String tipe = user.cekLogin(username, password);
+                if(tipe.equals("member")){
+                    JOptionPane.showMessageDialog(null, "Welcome " + UserManager.getInstance().getUser().getNama());
+                    loginFrame.setVisible(false);
+                    new MenuCustomer();
+                }else if(tipe.equals("driver")){
+                    JOptionPane.showMessageDialog(null, "Welcome " + UserManager.getInstance().getUser().getNama());
+                    loginFrame.setVisible(false);
+                    new MenuDriver();
+                }else if(tipe.equals("admin")){
+                    JOptionPane.showMessageDialog(null, "Welcome " + UserManager.getInstance().getUser().getNama());
+                    loginFrame.setVisible(false);
+                    //new MenuAdmin();
                 }else{
-                    JOptionPane.showMessageDialog(loginFrame, "Username dan Password Tidak Terdaftar!", "Error", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Username / Password Salah!!", "ERROR", JOptionPane.ERROR_MESSAGE);
+                    tf_username.setText("");
+                    tf_password.setText("");
                 }
                 break;
             case "Register":
-                new register();
+                loginFrame.setVisible(false);
+                new MenuRegister();
+                
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + command);

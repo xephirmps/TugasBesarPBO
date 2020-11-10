@@ -5,6 +5,7 @@
  */
 package view;
 
+import Controller.UserManager;
 import controller.Controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +22,7 @@ import model.Users;
  *
  * @author User
  */
-public class register extends JFrame implements ActionListener{
+public class MenuRegister extends JFrame implements ActionListener{
     JPanel panel;
     JFrame registerFrame = new JFrame("Register");
     
@@ -45,8 +46,7 @@ public class register extends JFrame implements ActionListener{
     JButton btn_insert = new JButton("Submit");
     JButton btn_login = new JButton("Login");
 
-    
-    public register(){
+    public MenuRegister(){
         registerFrame.setSize(450,250);
         registerFrame.setLocationRelativeTo(null);
         registerFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -105,22 +105,23 @@ public class register extends JFrame implements ActionListener{
         switch (command) {
             case "Submit":
                 Users new_user = new Users();
-                new_user.nama = tf_nama.getText();
-                new_user.email = tf_email.getText();
-                new_user.username = tf_username.getText();
-                new_user.password = tf_password.getText();
-                new_user.alamat = tf_alamat.getText();
-                boolean CekRegister = Users.CekRegister(new_user.username, new_user.email);
+                new_user.setNama(tf_nama.getText());
+                new_user.setEmail(tf_email.getText());
+                new_user.setUsername(tf_username.getText());
+                new_user.setPassword(tf_password.getText());
+                new_user.setAlamat(tf_alamat.getText());
+                boolean CekRegister = new_user.cekRegister(new_user.getUsername(), new_user.getEmail());
                 if(CekRegister){
                     JOptionPane.showMessageDialog(registerFrame, "Username atau Email Sudah Terdaftar!", "Error", JOptionPane.WARNING_MESSAGE);
                 }else{
                     Controller.insertNewUser(new_user);
+                    UserManager.getInstance().setUser(new_user);
                     JOptionPane.showMessageDialog(registerFrame, "Register Berhasil!");
-                    //masukkan menu selanjutnya
+                    new MenuCustomer();
                 }
                 break;
             case "Login":
-                new login();
+                new MenuLogin();
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + command);

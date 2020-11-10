@@ -12,18 +12,18 @@ import java.util.ArrayList;
  * @author User
  */
 public class Drivers extends Users{
-    String kendaraan;
-    String platNomor;
-    int pendapatan;
-    boolean status;
-    ArrayList<Pesanan> Pesanan=new ArrayList<Pesanan>();
+    private String kendaraan;
+    private String platNomor;
+    private int pendapatan;
+    private boolean status;
+    private ArrayList<Pesanan> Pesanan = new ArrayList<Pesanan>();
     
     public Drivers(){
         
     }
 
-    public Drivers(String kendaraan, String platNomor, int pendapatan, boolean status, String nama, String alamat, String email, String username, String password) {
-        super(nama, alamat, email, username, password);
+    public Drivers(String kendaraan, String platNomor, int pendapatan, boolean status, int idUser, String nama, String alamat, String email, String username, String password) {
+        super(idUser, nama, alamat, email, username, password);
         this.kendaraan = kendaraan;
         this.platNomor = platNomor;
         this.pendapatan = pendapatan;
