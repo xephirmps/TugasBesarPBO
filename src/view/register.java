@@ -8,13 +8,18 @@ package view;
 import controller.Controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import model.StatusEnum;
+import static model.StatusEnum.DRIVER;
+import static model.StatusEnum.MEMBER;
 import model.Users;
 
 /**
@@ -40,6 +45,12 @@ public class register extends JFrame implements ActionListener{
     JLabel l_alamat = new JLabel("Alamat");
     JTextField tf_alamat = new JTextField();
     
+    JLabel l_status = new JLabel("Status");
+    JRadioButton radioMember = new JRadioButton("Member");
+    JRadioButton radioDriver = new JRadioButton("Driver");
+    ButtonGroup bg_status = new ButtonGroup();
+
+    
     JLabel l_register = new JLabel("Register");
     
     JButton btn_insert = new JButton("Submit");
@@ -47,7 +58,7 @@ public class register extends JFrame implements ActionListener{
 
     
     public register(){
-        registerFrame.setSize(450,250);
+        registerFrame.setSize(450,300);
         registerFrame.setLocationRelativeTo(null);
         registerFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
@@ -81,18 +92,46 @@ public class register extends JFrame implements ActionListener{
         registerFrame.add(tf_alamat);
         registerFrame.add(l_alamat);
         
-        btn_insert.setBounds(10,150,80,30);
+        l_status.setText("Status ");
+        l_status.setBounds(10,125,150,50);
+        radioMember.setBounds(160, 140, 100, 20);
+        radioDriver.setBounds(300,140,100,20);
+        radioMember.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(radioMember.isSelected()){
+                    radioDriver.setEnabled(false);
+                }else{
+                    radioDriver.setEnabled(true);
+                }
+            }
+        });
+        radioDriver.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(radioDriver.isSelected()){
+                    radioMember.setEnabled(false);
+                }else{
+                    radioMember.setEnabled(true);
+                }
+            }
+        });
+        registerFrame.add(l_status);
+        registerFrame.add(radioMember);
+        registerFrame.add(radioDriver);
+        
+        btn_insert.setBounds(10,200,80,30);
         btn_insert.setActionCommand("Submit");
         btn_insert.addActionListener(this);
         registerFrame.add(btn_insert);
         
-        btn_login.setBounds(290,150,100,30);
+        btn_login.setBounds(290,200,100,30);
         btn_login.setActionCommand("Login");
         btn_login.addActionListener(this);
         registerFrame.add(btn_login);
         
         l_register.setText("Sudah punya akun? Login ");
-        l_register.setBounds(275,170,200,50);
+        l_register.setBounds(275,220,200,50);
         registerFrame.add(l_register);
         
         registerFrame.setLayout(null);
@@ -105,12 +144,19 @@ public class register extends JFrame implements ActionListener{
         switch (command) {
             case "Submit":
                 Users new_user = new Users();
-                new_user.nama = tf_nama.getText();
-                new_user.email = tf_email.getText();
-                new_user.username = tf_username.getText();
-                new_user.password = tf_password.getText();
-                new_user.alamat = tf_alamat.getText();
-                boolean CekRegister = Users.CekRegister(new_user.username, new_user.email);
+                new_user.setNama(tf_nama.getText());
+                new_user.setEmail(tf_email.getText());
+                new_user.setUsername(tf_username.getText());
+                new_user.setPassword(tf_password.getText());
+                new_user.setAlamat(tf_alamat.getText());
+                StatusEnum status = null;
+                if(radioDriver.isSelected()){
+                    status = DRIVER;
+                }else if(radioMember.isSelected()) {
+                    status = MEMBER;
+                }
+                new_user.setStatus(status);
+                boolean CekRegister = Users.CekRegister(new_user.getUsername(), new_user.getEmail());
                 if(CekRegister){
                     JOptionPane.showMessageDialog(registerFrame, "Username atau Email Sudah Terdaftar!", "Error", JOptionPane.WARNING_MESSAGE);
                 }else{
