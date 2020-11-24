@@ -5,8 +5,8 @@
  */
 package view;
 
-import Controller.UserManager;
-import controller.Controller;
+import controller.DatabaseControl;
+import controller.MemberManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import model.Member;
 import model.Users;
 
 /**
@@ -104,18 +105,18 @@ public class MenuRegister extends JFrame implements ActionListener{
         String command = ae.getActionCommand();
         switch (command) {
             case "Submit":
-                Users new_user = new Users();
-                new_user.setNama(tf_nama.getText());
-                new_user.setEmail(tf_email.getText());
-                new_user.setUsername(tf_username.getText());
-                new_user.setPassword(tf_password.getText());
-                new_user.setAlamat(tf_alamat.getText());
-                boolean CekRegister = new_user.cekRegister(new_user.getUsername(), new_user.getEmail());
+                Member newMember = new Member();
+                newMember.setNama(tf_nama.getText());
+                newMember.setEmail(tf_email.getText());
+                newMember.setUsername(tf_username.getText());
+                newMember.setPassword(tf_password.getText());
+                newMember.setAlamat(tf_alamat.getText());
+                boolean CekRegister = newMember.cekRegister(newMember.getUsername(), newMember.getEmail());
                 if(CekRegister){
                     JOptionPane.showMessageDialog(registerFrame, "Username atau Email Sudah Terdaftar!", "Error", JOptionPane.WARNING_MESSAGE);
                 }else{
-                    Controller.insertNewUser(new_user);
-                    UserManager.getInstance().setUser(new_user);
+                    DatabaseControl.insertNewMember(newMember);
+                    MemberManager.getInstance().setMember(newMember);
                     JOptionPane.showMessageDialog(registerFrame, "Register Berhasil!");
                     new MenuCustomer();
                 }

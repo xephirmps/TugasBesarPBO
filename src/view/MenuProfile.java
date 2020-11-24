@@ -5,7 +5,9 @@
  */
 package view;
 
-import Controller.UserManager;
+import controller.AdminManager;
+import controller.DriversManager;
+import controller.MemberManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -17,7 +19,7 @@ import model.Member;
 
 /**
  *
- * @author dense
+ * @author User
  */
 public class MenuProfile {
     private JLabel labelNama, labelUsername, labelAlamat, labelSaldoOvo, labelIsiNama, labelIsiUsername, labelIsiAlamat, labelIsiSaldo;
@@ -35,18 +37,22 @@ public class MenuProfile {
         buttonBack = new JButton("Back");
         buttonLogout = new JButton("Logout");
         
-        if(UserManager.getInstance().getUser() instanceof Member){
-            Member member = (Member) UserManager.getInstance().getUser();
+        if(MemberManager.getInstance().getLogin()){
+            Member member = (Member) MemberManager.getInstance().getMember();
+            labelIsiNama = new JLabel(MemberManager.getInstance().getMember().getNama());
+            labelIsiUsername = new JLabel(MemberManager.getInstance().getMember().getUsername());
+            labelIsiAlamat = new JLabel(MemberManager.getInstance().getMember().getAlamat());
             labelSaldoOvo = new JLabel("Saldo Ovo");
             labelIsiSaldo = new JLabel("Rp. " + member.getSaldoOVO());
             frame.add(labelSaldoOvo);
             frame.add(labelIsiSaldo);
-        }else if(UserManager.getInstance().getUser() instanceof Drivers){
-            Drivers driver = (Drivers) UserManager.getInstance().getUser();
+        }else if(DriversManager.getInstance().getLogin()){
+            Drivers driver = DriversManager.getInstance().getDrivers();
+            labelIsiNama = new JLabel(DriversManager.getInstance().getDrivers().getNama());
+            labelIsiUsername = new JLabel(DriversManager.getInstance().getDrivers().getUsername());
+            labelIsiAlamat = new JLabel(DriversManager.getInstance().getDrivers().getAlamat());
         }
-        labelIsiNama = new JLabel(UserManager.getInstance().getUser().getNama());
-        labelIsiUsername = new JLabel(UserManager.getInstance().getUser().getUsername());
-        labelIsiAlamat = new JLabel(UserManager.getInstance().getUser().getAlamat());
+        
         
         labelNama.setBounds(50, 10, 100, 20);
         labelUsername.setBounds(50, 40, 100, 20);
@@ -68,17 +74,26 @@ public class MenuProfile {
                     case JOptionPane.YES_OPTION:
                         JOptionPane.showMessageDialog(null, "Terima kasih terlah menggunakan aplikasi ini!");
                         frame.setVisible(false);
-                        UserManager.getInstance().setUser(null);
+                        if(MemberManager.getInstance().getLogin()){
+                            MemberManager.getInstance().setLogin(false);
+                            MemberManager.getInstance().setMember(null);
+                        }else if(AdminManager.getInstance().getLogin()){
+                            AdminManager.getInstance().setLogin(false);
+                            AdminManager.getInstance().setAdmin(null);
+                        }else if(DriversManager.getInstance().getLogin()){
+                            DriversManager.getInstance().setLogin(false);
+                            DriversManager.getInstance().setDrivers(null);
+                        }
                         new MenuLogin();
                 }
             }
         });
         buttonBack.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                if(UserManager.getInstance().getUser() instanceof Member){
+                if(MemberManager.getInstance().getLogin()){
                     frame.setVisible(false);
                     new MenuCustomer();
-                }else if(UserManager.getInstance().getUser() instanceof Drivers){
+                }else if(DriversManager.getInstance().getLogin()){
                     frame.setVisible(false);
                     new MenuDriver();
                 }

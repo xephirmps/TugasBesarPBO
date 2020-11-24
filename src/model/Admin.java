@@ -5,6 +5,10 @@
  */
 package model;
 
+import controller.AdminManager;
+import controller.DatabaseControl;
+import java.util.ArrayList;
+
 /**
  *
  * @author User
@@ -12,21 +16,30 @@ package model;
 public class Admin extends Users{
     private boolean admin;
     
-    public Admin(){
-        
-    }
-
-    public Admin(boolean admin, int idUser, String nama, String alamat, String email, String username, String password) {
-        super(idUser, nama, alamat, email, username, password);
-        this.admin = admin;
-    }
-
     public boolean isAdmin() {
         return admin;
     }
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    @Override
+    public boolean cekRegister(String username, String email) {
+        return true;
+    }
+
+    @Override
+    public boolean cekLogin(String username, String password) {
+        ArrayList<Admin> allAdmin = DatabaseControl.getAllAdmin();
+        boolean ketemu = false;
+        for(int i = 0; (!ketemu) && (i < allAdmin.size()); i++){
+            if((allAdmin.get(i).getUsername().equals(username)) && (allAdmin.get(i).getPassword().equals(password))){
+                ketemu = true;
+                AdminManager.getInstance().setAdmin(allAdmin.get(i));
+            }
+        }
+        return ketemu;
     }
     
 }

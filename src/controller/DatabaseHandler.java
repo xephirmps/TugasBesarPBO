@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package controller;
 
 /**
  *
@@ -13,12 +13,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import javax.swing.JOptionPane;
 
-public class DatabaseHandler{
+public class DatabaseHandler {
 
     public Connection con;
     private String driver = "com.mysql.jdbc.Driver";
-    //private String url = "jdbc:mysql://localhost/db_upgrab";
-    private String url = "jdbc:mysql://localhost/db_upgrab?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private String url = "jdbc:mysql://localhost/db_upgrab";
+//    private String url = "jdbc:mysql://localhost/data_kasir?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
     private String username = "root";
     private String password = "";
 

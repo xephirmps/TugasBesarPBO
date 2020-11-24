@@ -5,7 +5,6 @@
  */
 package main;
 
-import controller.Controller;
 import view.MenuDriver;
 import view.MenuLogin;
 

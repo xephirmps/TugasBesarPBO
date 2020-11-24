@@ -5,8 +5,10 @@
  */
 package view;
 
-import Controller.UserManager;
-import controller.Controller;
+import controller.AdminManager;
+import controller.DatabaseControl;
+import controller.DriversManager;
+import controller.MemberManager;
 import model.Users;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +21,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+import model.Admin;
+import model.Drivers;
+import model.Member;
 
 /**
  *
@@ -81,22 +86,24 @@ public class MenuLogin extends JFrame implements ActionListener{
             case "Submit":
                 String username = tf_username.getText();
                 String password = tf_password.getText();
-                Users user = new Users();
-                user.setUsername(username);
-                user.setPassword(password);
-                String tipe = user.cekLogin(username, password);
-                if(tipe.equals("member")){
-                    JOptionPane.showMessageDialog(null, "Welcome " + UserManager.getInstance().getUser().getNama());
+                Member member = new Member();
+                Admin admin = new Admin();
+                Drivers driver = new Drivers();
+                if(member.cekLogin(username, password)){
+                    JOptionPane.showMessageDialog(null, "Welcome " + MemberManager.getInstance().getMember().getNama());
+                    MemberManager.getInstance().setLogin(true);
                     loginFrame.setVisible(false);
                     new MenuCustomer();
-                }else if(tipe.equals("driver")){
-                    JOptionPane.showMessageDialog(null, "Welcome " + UserManager.getInstance().getUser().getNama());
+                }else if(driver.cekLogin(username, password)){
+                    JOptionPane.showMessageDialog(null, "Welcome " + DriversManager.getInstance().getDrivers().getNama());
+                    DriversManager.getInstance().setLogin(true);
                     loginFrame.setVisible(false);
                     new MenuDriver();
-                }else if(tipe.equals("admin")){
-                    JOptionPane.showMessageDialog(null, "Welcome " + UserManager.getInstance().getUser().getNama());
+                }else if(admin.cekLogin(username, password)){
+                    JOptionPane.showMessageDialog(null, "Welcome " + AdminManager.getInstance().getAdmin().getNama());
+                    AdminManager.getInstance().setLogin(true);
                     loginFrame.setVisible(false);
-                    //new MenuAdmin();
+                    new MenuAdmin();
                 }else{
                     JOptionPane.showMessageDialog(null, "Username / Password Salah!!", "ERROR", JOptionPane.ERROR_MESSAGE);
                     tf_username.setText("");

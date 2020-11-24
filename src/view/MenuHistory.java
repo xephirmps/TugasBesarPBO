@@ -5,7 +5,9 @@
  */
 package view;
 
-import Controller.UserManager;
+import controller.AdminManager;
+import controller.DriversManager;
+import controller.MemberManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ import model.Pesanan;
 
 /**
  *
- * @author dense
+ * @author User
  */
 public class MenuHistory {
     private JTable tableHistory;
@@ -35,14 +37,14 @@ public class MenuHistory {
         ArrayList<Pesanan> allPesanan = new ArrayList<>();
         String kolom[] = {"ID", "Tipe Pesanan", "Tanggal Pemesanan", "Alamat Jemput", "Alamat Tujuan", "Total Harga", "Status"};
         
-        if(UserManager.getInstance().getUser() instanceof Member){
-            Member member = (Member) UserManager.getInstance().getUser();
+        if(MemberManager.getInstance().getLogin()){
+            Member member = MemberManager.getInstance().getMember();
             allPesanan = member.getPesanan();
-        }else if(UserManager.getInstance().getUser() instanceof Drivers){
-            Drivers driver = (Drivers) UserManager.getInstance().getUser();
+        }else if(DriversManager.getInstance().getLogin()){
+            Drivers driver = DriversManager.getInstance().getDrivers();
             allPesanan = driver.getPesanan();
         }
-        String[][] data = new String[2][7];
+        String[][] data = new String[allPesanan.size()][7];
 
         for(int i = 0; i < allPesanan.size(); i++){
             String status;
@@ -79,17 +81,26 @@ public class MenuHistory {
                     case JOptionPane.YES_OPTION:
                         JOptionPane.showMessageDialog(null, "Terima kasih terlah menggunakan aplikasi ini!");
                         frame.setVisible(false);
-                        UserManager.getInstance().setUser(null);
+                        if(MemberManager.getInstance().getLogin()){
+                            MemberManager.getInstance().setLogin(false);
+                            MemberManager.getInstance().setMember(null);
+                        }else if(AdminManager.getInstance().getLogin()){
+                            AdminManager.getInstance().setLogin(false);
+                            AdminManager.getInstance().setAdmin(null);
+                        }else if(DriversManager.getInstance().getLogin()){
+                            DriversManager.getInstance().setLogin(false);
+                            DriversManager.getInstance().setDrivers(null);
+                        }
                         new MenuLogin();
                 }
             }
         });
         buttonBack.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                if(UserManager.getInstance().getUser() instanceof Member){
+                if(MemberManager.getInstance().getLogin()){
                     frame.setVisible(false);
                     new MenuCustomer();
-                }else if(UserManager.getInstance().getUser() instanceof Drivers){
+                }else if(DriversManager.getInstance().getLogin()){
                     frame.setVisible(false);
                     new MenuDriver();
                 }

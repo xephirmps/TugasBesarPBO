@@ -5,6 +5,8 @@
  */
 package model;
 
+import controller.DatabaseControl;
+import controller.DriversManager;
 import java.util.ArrayList;
 
 /**
@@ -18,18 +20,6 @@ public class Drivers extends Users{
     private boolean status;
     private ArrayList<Pesanan> Pesanan = new ArrayList<Pesanan>();
     
-    public Drivers(){
-        
-    }
-
-    public Drivers(String kendaraan, String platNomor, int pendapatan, boolean status, int idUser, String nama, String alamat, String email, String username, String password) {
-        super(idUser, nama, alamat, email, username, password);
-        this.kendaraan = kendaraan;
-        this.platNomor = platNomor;
-        this.pendapatan = pendapatan;
-        this.status = status;
-    }
-
     public String getKendaraan() {
         return kendaraan;
     }
@@ -54,7 +44,7 @@ public class Drivers extends Users{
         this.pendapatan = pendapatan;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
@@ -68,5 +58,23 @@ public class Drivers extends Users{
 
     public void setPesanan(ArrayList<Pesanan> Pesanan) {
         this.Pesanan = Pesanan;
+    }
+
+    @Override
+    public boolean cekRegister(String username, String email) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean cekLogin(String username, String password) {
+        ArrayList<Drivers> allDriver = DatabaseControl.getAllDriver();
+        boolean ketemu = false;
+        for(int i = 0; (!ketemu) && (i < allDriver.size()); i++){
+            if((allDriver.get(i).getUsername().equals(username)) && (allDriver.get(i).getPassword().equals(password))){
+                ketemu = true;
+                DriversManager.getInstance().setDrivers(allDriver.get(i));
+            }
+        }
+        return ketemu;
     }
 }
